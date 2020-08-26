@@ -1,0 +1,9 @@
+ru\geekbrains\config\AppConfig.class
+ru\geekbrains\config\PersistConfig.class
+ru\geekbrains\controller\UserController.class
+ru\geekbrains\repository\UserRepository.class
+ru\geekbrains\repository\ProductRepository.class
+ru\geekbrains\WebInitializer.class
+ru\geekbrains\persistance\Product.class
+ru\geekbrains\controller\ProductController.class
+ru\geekbrains\persistance\User.class
