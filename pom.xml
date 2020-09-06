@@ -10,6 +10,7 @@
     <modules>
         <module>lesson1_chat_server</module>
         <module>lesson-2_spring-mvc</module>
+        <module>lesson-3_hibernate</module>
     </modules>
     <packaging>pom</packaging>
     <build>
