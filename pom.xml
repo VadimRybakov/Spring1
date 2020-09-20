@@ -11,6 +11,7 @@
         <module>lesson1_chat_server</module>
         <module>lesson-2_spring-mvc</module>
         <module>lesson-3_hibernate</module>
+        <module>lesson-4_spring_data</module>
     </modules>
     <packaging>pom</packaging>
     <build>

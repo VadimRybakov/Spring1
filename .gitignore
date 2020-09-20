@@ -1,3 +1,7 @@
 .idea
 *.iml
 *.log
+/lesson-4_spring_data/target/
+/lesson-3_hibernate/target/
+/lesson-2_spring-mvc/target/
+/lesson1_chat_server/target/
