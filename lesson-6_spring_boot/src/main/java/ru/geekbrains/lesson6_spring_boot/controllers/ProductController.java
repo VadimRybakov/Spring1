@@ -1,17 +1,19 @@
-package ru.geekbrains.controllers;
+package ru.geekbrains.lesson6_spring_boot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.entities.Product;
-import ru.geekbrains.services.ProductService;
+import ru.geekbrains.lesson6_spring_boot.entities.Product;
+import ru.geekbrains.lesson6_spring_boot.exceptions.NotFoundException;
+import ru.geekbrains.lesson6_spring_boot.services.ProductService;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,25 +33,20 @@ public class ProductController {
                                  @RequestParam(name = "max_price", required = false)BigDecimal max,
                                  @RequestParam("page") Optional<Integer> page,
                                  @RequestParam("size") Optional<Integer> size,
-                                 @RequestParam(name = "sortBy", required = false) String sortBy){
-/*        List<Product> products;
-        if(min ==null && max == null) {
-            products = productService.findAll();
-        } else if (min == null) {
-            products = productService.findByMaxPrice(max);
-        } else if(max == null){
-            products = productService.findByMinPrice(min);
-        } else {
-            products = productService.findByMinAndMaxPrice(min, max);
-        }
-        model.addAttribute("products",products);*/
-        StringBuilder sortParam;
-        if(min == null && max == null && page.isEmpty() && size.isEmpty() && sortBy == null) {
-            sortParam = new StringBuilder("id");
-        } else {
-            sortParam = new StringBuilder(sortBy);
-        }
-        Sort sort = Sort.by(Sort.Direction.ASC, sortParam.toString());
+                                 @RequestParam("sortBy") Optional<String> sortBy,
+                                 @RequestParam("direction") Optional<String> direction
+    ){
+        Sort sort;
+        String param;
+        if(sortBy.isPresent()) {
+            if (sortBy.get().equals("price")) param = "price";
+            else if (sortBy.get().equals("title")) throw new NotFoundException();
+            else param = "id";
+        } else param = "id";
+        if(direction.isPresent()) {
+            if (direction.get().equals("DESC")) sort = Sort.by(Sort.Direction.DESC, param);
+            else sort = Sort.by(Sort.Direction.ASC, param);
+        } else sort = Sort.by(Sort.Direction.ASC, param);
         PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(5), sort);
         Page<Product> products = productService.findByFilters(min, max, pageRequest);
         model.addAttribute("products", products);
@@ -81,5 +78,4 @@ public class ProductController {
         productService.update(product);
         return "redirect:/products";
     }
-
 }
