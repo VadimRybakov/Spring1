@@ -1,0 +1,30 @@
+GET http://localhost:8080/test-app/api/v1/product/all
+
+###
+
+GET http://localhost:8080/test-app/api/v1/product/3/id
+
+###
+
+POST http://localhost:8080/test-app/api/v1/product
+Content-Type: application/json
+
+{
+  "title": "banana",
+  "price": 75.58
+}
+
+###
+
+PUT http://localhost:8080/test-app/api/v1/product
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "banana",
+  "price": 85
+}
+
+###
+
+DELETE http://localhost:8080/test-app/api/v1/product/21/id
