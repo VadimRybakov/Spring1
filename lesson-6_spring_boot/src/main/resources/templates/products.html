@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <!-- Required meta tags -->
@@ -28,7 +28,14 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">Products</a>
             </li>
+            <li sec:authorize="hasAnyRole('ADMIN','SUPERADMIN')" class="nav-item active">
+                <a class="nav-link" th:href="@{/users}">Users</a>
+            </li>
         </ul>
+        <form sec:authorize="isAuthenticated()"class="form-inline mu-2 my-lg-0"
+              th:action="@{/logout}" method = "post">
+            <button class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+        </form>
     </div>
 </nav>
 
@@ -69,7 +76,7 @@
                     <th scope="col">Id</th>
                     <th scope="col">Title</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Actions</th>
+                    <th sec:authorize="hasAnyRole('MANAGER', 'ADMIN')" scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -77,9 +84,9 @@
                     <th scope="row" th:text="${product.id}"></th>
                     <td th:text="${product.title}">Title</td>
                     <td th:text="${product.price}">Price</td>
-                    <td>
-                        <a class="btn btn-success" th:href="@{/products/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" th:href="@{/products/delete/{id}(id = ${product.id})}"><i class="far fa-trash-alt"></i></a>
+                    <td sec:authorize="hasAnyRole('MANAGER', 'ADMIN')">
+                        <a class="btn btn-success" th:href="@{/products/edit/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" th:href="@{/products/edit/delete/{id}(id = ${product.id})}"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
                 </tbody>

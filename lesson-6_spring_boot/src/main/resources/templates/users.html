@@ -26,10 +26,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Products form</a>
+                <a class="nav-link" th:href="@{/products}">Products</a>
             </li>
-            <li sec:authorize="hasAnyRole('ADMIN','SUPERADMIN')" class="nav-item active">
-                <a class="nav-link" th:href="@{/users}">Users</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Users</a>
             </li>
         </ul>
         <form sec:authorize="isAuthenticated()"class="form-inline mu-2 my-lg-0"
@@ -42,17 +42,33 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/products/edit/update}" method="post" th:object="${product}">
-                <div class="form-group">
-                    <label>Id</label>
-                    <input type="number" class="form-control" th:field="*{id}" placeholder="Enter id">
-                    <label>Title</label>
-                    <input type="text" class="form-control" th:field="*{title}" placeholder="Enter title">
-                    <label>Cost</label>
-                    <input type="number" class="form-control" th:field="*{price}" placeholder="Enter price">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <a sec:authorize="hasRole('SUPERADMIN')" class="btn btn-primary" th:href="@{/users/edit}">Add User</a>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Roles</th>
+                    <th sec:authorize="hasRole('SUPERADMIN')" scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <th scope="row" th:text="${user.id}"></th>
+                    <td th:text="${user.login}"></td>
+                    <td >
+                        <p th:each="role : ${user.roles}" th:text="${role.name}"></p>
+                    </td>
+                    <td sec:authorize="hasRole('SUPERADMIN')">
+                        <a class="btn btn-success" th:href="@{/users/edit/{id}(id = ${user.id})}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" th:href="@{/users/edit/delete/{id}(id = ${user.id})}"><i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -68,5 +84,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
 </body>
+</html>

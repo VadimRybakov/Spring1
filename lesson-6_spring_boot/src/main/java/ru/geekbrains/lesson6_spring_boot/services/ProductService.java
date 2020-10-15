@@ -54,10 +54,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    @Transactional
     public void save(Product product) {
         productRepository.save(product);
     }
 
+    @Transactional
     public void deleteById(int id) {
         productRepository.deleteById(id);
     }
