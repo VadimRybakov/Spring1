@@ -26,7 +26,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Products form</a>
+                <a class="nav-link" th:href="@{/products}">Products</a>
             </li>
             <li sec:authorize="hasAnyRole('ADMIN','SUPERADMIN')" class="nav-item active">
                 <a class="nav-link" th:href="@{/users}">Users</a>
@@ -34,7 +34,8 @@
         </ul>
         <form sec:authorize="isAuthenticated()"class="form-inline mu-2 my-lg-0"
               th:action="@{/logout}" method = "post">
-            <button class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+            <button class="btn btn-outline-success my-2 my-sm-0">Logout</span>
+            </button>
         </form>
     </div>
 </nav>
@@ -42,14 +43,30 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/products/edit/update}" method="post" th:object="${product}">
+            <form th:action="@{/users/edit/update}" method="post" th:object="${user}">
+                <input th:type="hidden" th:field="*{id}">
                 <div class="form-group">
-                    <label>Id</label>
-                    <input type="number" class="form-control" th:field="*{id}" placeholder="Enter id">
-                    <label>Title</label>
-                    <input type="text" class="form-control" th:field="*{title}" placeholder="Enter title">
-                    <label>Cost</label>
-                    <input type="number" class="form-control" th:field="*{price}" placeholder="Enter price">
+                    <div>
+                        <label>Login</label>
+                        <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login"
+                               required minlength="5" maxlength="20">
+                    </div>
+                    <div>
+                        <label>Password</label>
+                        <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password"
+                               required minlength="5" maxlength="20">
+                        <label>Confirm password</label>
+                        <input type="password" class="form-control" th:field="*{confirmPassword}" placeholder="Confirm password"
+                               required minlength="5" maxlength="20">
+                        <label th:if="${pasMismatchErr != null}" th:text="${pasMismatchErr}"></label>
+                    </div>
+                    <div>
+                        <label>Roles</label>
+                        <div th:each="r : ${roles}">
+                            <input type="checkbox" th:field="*{roles}" th:value="${r.id}"/>
+                            <label th:for="${#ids.prev('roles')}" th:text="${r.name}"></label>
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

@@ -53,27 +53,27 @@ public class ProductController {
         return "products";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/edit/{id}")
     public String editUser(@PathVariable("id") int id, Model model){
         Product product = productService.findById(id);
         model.addAttribute("product", product);
         return "products_form";
     }
 
-    @GetMapping("/form")
+    @GetMapping("/edit/form")
     public String productForm(Model model){
         model.addAttribute("product", new Product());
         return "products_form";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/edit/delete/{id}")
     public String deleteProduct(@PathVariable("id") int id) {
         Product product = productService.findById(id);
         productService.delete(product);
         return "redirect:/products";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/edit/update")
     public String updateUser(Product product) {
         productService.update(product);
         return "redirect:/products";
